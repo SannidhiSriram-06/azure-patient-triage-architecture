@@ -1,92 +1,111 @@
-AI Patient Triage System on Azure
-Cloud Solution Architect (CSA) Case Study using Azure AI, App Services, and Data Platform
-📌 Overview
+# Azure AI Patient Triage System (POC)
 
-This project demonstrates how a rural healthcare problem can be translated into a repeatable Azure AI solution architecture using Microsoft cloud services.
+A Flask-based web application deployed on **Azure App Service** that accepts patient symptoms, sends them to **Azure OpenAI**, classifies the triage level, and logs every interaction into **Azure Table Storage**.
 
-Rural clinics often lack 24/7 medical staff. Patients are unsure whether their symptoms require urgent care, a doctor visit, or simple self-care. This leads to delayed treatment and overcrowded emergency rooms.
+This project demonstrates a complete, working Azure architecture from compute → AI → storage, validated entirely through deployment evidence.
 
-This case study shows how a Cloud Solution Architect can design an Agentic AI triage system using Azure OpenAI, Azure App Service, and supporting Azure platform services to solve this problem in a secure, scalable, and reusable manner.
+> ⚠️ All Azure resources were deleted after proof-of-deployment.
+> This repository relies on screenshots as verifiable evidence.
 
-🎯 Objective
+---
 
-Design a POC → MVP → Production-ready Azure architecture that:
+## 🧠 Architecture Overview
 
-Accepts patient symptoms through a web interface
+User → Flask App (Azure App Service) → Azure OpenAI → Triage Result → Azure Table Storage (audit log)
 
-Uses AI reasoning to classify triage severity
+This follows the POC architecture documented in the original design.
 
-Logs triage results for audit and compliance
+---
 
-Notifies clinic staff for urgent cases
+## ⚙️ Tech Stack
 
-Follows healthcare-aligned security and governance practices
+* Python 3.11
+* Flask
+* Gunicorn
+* Azure App Service (Linux, B1)
+* Azure OpenAI (model deployment: `triage-model`)
+* Azure Table Storage
+* Environment Variables for secrets (no Key Vault for POC stage)
 
-Can be reused across multiple clinics as repeatable IP
+---
 
-🧠 CSA Thinking Demonstrated
+## 🚀 What the App Does
 
-This project is intentionally written as an architecture mapping document rather than a coding exercise.
+1. User enters symptoms in a web form
+2. Flask sends symptoms to Azure OpenAI
+3. Model classifies into:
 
-For each part of the problem, the following is defined:
+   * Urgent Care
+   * Non-Urgent Visit
+   * Self Care
+4. Result is displayed to the user
+5. Same result is logged into Azure Table Storage for audit
 
-Requirement → Azure Service → Why this service over alternatives
+---
 
-This mirrors how Microsoft Cloud Solution Architects design solutions during customer engagements.
+## 🔐 Secure Configuration
 
-🏗️ Azure Services Used
-Requirement	Azure Service	Reason for Selection
-Patient symptom input via web	Azure App Service	Managed web hosting, HTTPS, fast MVP, no VM overhead
-Symptom reasoning & triage	Azure OpenAI (GPT-4/4o)	Agentic natural language reasoning without model training
-Triage logging & audit trail	Azure Storage Account	Low-cost, durable storage for logs without DB complexity
-Urgent case notifications	Azure Logic Apps	No-code workflow automation for alerts
-Monitoring & telemetry	Azure Monitor + App Insights	Observability for requests, errors, and performance
-Secret management	Azure Key Vault	Secure storage of API keys and credentials
-🤖 Agentic AI Triage Logic
+Secrets are **not hardcoded**.
 
-The AI follows structured prompt orchestration:
+The app uses App Service **Environment Variables**:
 
-Interpret symptoms
+* `AZURE_OPENAI_ENDPOINT`
+* `AZURE_OPENAI_API_KEY`
+* `AZURE_OPENAI_DEPLOYMENT`
+* `STORAGE_CONNECTION_STRING`
 
-Assess severity
+---
 
-Classify triage category
+## 📸 Deployment Proof (see PDF)
 
-Provide explanation
+The included PDF contains 13 screenshots proving:
 
-This simulates agent behavior using Azure OpenAI without requiring complex orchestration platforms.
+| Proof                            | Evidence                         |
+| -------------------------------- | -------------------------------- |
+| All Azure resources created      | Resource group view              |
+| Azure OpenAI model deployed      | Deployment list (`triage-model`) |
+| Flask app running on App Service | Web App overview                 |
+| Environment variables configured | Env vars page                    |
+| Gunicorn startup                 | Startup command                  |
+| Container boot logs              | Log stream                       |
+| Working triage result            | Browser screenshot               |
+| Data persisted to storage        | Table entities view              |
+| App Service plan metrics         | Live compute metrics             |
 
-🔁 POC to Production Evolution
-Stage	Architecture Characteristics
-POC	Single App Service + Azure OpenAI + Storage for validation
-MVP	Add Logic Apps alerts, App Insights dashboards, RBAC
-Production	Multi-region deployment, private endpoints, enhanced compliance
-🔐 Security & Compliance Considerations
+This demonstrates a **real cloud integration**, not a local demo.
 
-The design is HIPAA-aligned at architecture level by ensuring:
+---
 
-HTTPS encrypted communication
+## 🧩 Repository Contents
 
-Secure secret storage with Key Vault
+* `app.py` — Flask application
+* `requirements.txt` — Dependencies
+* `templates/index.html` — UI
+* `Azure_Triage_Deployment.pdf` — Deployment evidence
 
-Role-based access control (RBAC)
+---
 
-Isolated resource groups per deployment
+## 🧭 Why No URLs?
 
-Audit logging of triage decisions
+All Azure resources were intentionally deleted after validation to avoid unnecessary cost.
+Screenshots serve as permanent, timestamped proof of deployment.
 
-♻️ Repeatable IP
+---
 
-This architecture is designed as repeatable IP, allowing the same pattern to be rapidly deployed across multiple rural clinics with minimal customization.
+## 🎯 Purpose of This Project
 
-📄 Documentation
+This project was built to demonstrate practical understanding of:
 
-The full architecture mapping document is available here:
+* Azure App Service deployment mechanics
+* Azure OpenAI integration in production-style apps
+* Secure secret handling via environment variables
+* Persistent logging using Azure Table Storage
+* Debugging real-world Azure Linux container issues
 
-AI Patient Triage System – Azure Architecture Mapping.docx
+---
 
-This document contains detailed service justification and screenshots of Azure resources used.
+## 🏁 Outcome
 
-🧩 Key Takeaway
+A fully working AI triage system deployed on Azure, validated through logs, storage entries, and runtime evidence.
 
-This project demonstrates how Azure AI and platform services can be combined to deliver a real-world healthcare solution using Cloud Solution Architect principles rather than focusing purely on application code.
+This is a Proof-of-Concept implementation of a cloud-native AI application.
