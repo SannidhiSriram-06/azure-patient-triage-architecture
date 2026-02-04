@@ -1,0 +1,10 @@
+<form method="post">
+    <textarea name="symptoms" placeholder="Enter symptoms"></textarea>
+    <br><br>
+    <button type="submit">Triage</button>
+</form>
+
+{% if result %}
+<h2>Result:</h2>
+<p>{{ result }}</p>
+{% endif %}
