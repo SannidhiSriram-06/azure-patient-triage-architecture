@@ -56,26 +56,6 @@ The app uses App Service **Environment Variables**:
 
 ---
 
-## 📸 Deployment Proof (see PDF)
-
-The included PDF contains 13 screenshots proving:
-
-| Proof                            | Evidence                         |
-| -------------------------------- | -------------------------------- |
-| All Azure resources created      | Resource group view              |
-| Azure OpenAI model deployed      | Deployment list (`triage-model`) |
-| Flask app running on App Service | Web App overview                 |
-| Environment variables configured | Env vars page                    |
-| Gunicorn startup                 | Startup command                  |
-| Container boot logs              | Log stream                       |
-| Working triage result            | Browser screenshot               |
-| Data persisted to storage        | Table entities view              |
-| App Service plan metrics         | Live compute metrics             |
-
-This demonstrates a **real cloud integration**, not a local demo.
-
----
-
 ## 🧩 Repository Contents
 
 * `app.py` — Flask application
