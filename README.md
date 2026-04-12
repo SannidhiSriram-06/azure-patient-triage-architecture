@@ -1,91 +1,101 @@
 # Azure AI Patient Triage System (POC)
 
-A Flask-based web application deployed on **Azure App Service** that accepts patient symptoms, sends them to **Azure OpenAI**, classifies the triage level, and logs every interaction into **Azure Table Storage**.
+A cloud-deployed Flask application on **Azure App Service** that processes patient symptoms using **Azure OpenAI**, classifies triage priority, and records each interaction in **Azure Table Storage** for audit and traceability.
 
-This project demonstrates a complete, working Azure architecture from compute → AI → storage, validated entirely through deployment evidence.
-
-> ⚠️ All Azure resources were deleted after proof-of-deployment.
-> This repository relies on screenshots as verifiable evidence.
+This project demonstrates an end-to-end Azure-based AI workflow: application hosting, LLM integration, and persistent logging.
 
 ---
 
-## 🧠 Architecture Overview
+## 🧠 Architecture
 
-User → Flask App (Azure App Service) → Azure OpenAI → Triage Result → Azure Table Storage (audit log)
+**Flow:**
 
-This follows the POC architecture documented in the original design.
+User → Flask App (Azure App Service) → Azure OpenAI → Triage Classification → Azure Table Storage (Audit Log)
+
+**Key Characteristics:**
+
+* Stateless web service with externalized AI inference
+* Persistent audit logging for every request
+* Separation of compute, inference, and storage layers
 
 ---
 
 ## ⚙️ Tech Stack
 
-* Python 3.11
-* Flask
-* Gunicorn
-* Azure App Service (Linux, B1)
-* Azure OpenAI (model deployment: `triage-model`)
-* Azure Table Storage
-* Environment Variables for secrets (no Key Vault for POC stage)
+| Layer   | Technology                                        |
+| ------- | ------------------------------------------------- |
+| Backend | Python 3.11, Flask, Gunicorn                      |
+| AI/LLM  | Azure OpenAI (custom deployment: `triage-model`)  |
+| Compute | Azure App Service (Linux, B1 tier)                |
+| Storage | Azure Table Storage                               |
+| Config  | Environment Variables (App Service Configuration) |
 
 ---
 
-## 🚀 What the App Does
+## 🚀 Functionality
 
-1. User enters symptoms in a web form
-2. Flask sends symptoms to Azure OpenAI
-3. Model classifies into:
+1. User submits symptoms via a web interface
+2. Backend sends structured prompt to Azure OpenAI
+3. Model returns triage classification:
 
    * Urgent Care
    * Non-Urgent Visit
    * Self Care
 4. Result is displayed to the user
-5. Same result is logged into Azure Table Storage for audit
+5. Interaction is logged in Azure Table Storage for audit
 
 ---
 
-## 🔐 Secure Configuration
+## 🔐 Configuration & Security
 
-Secrets are **not hardcoded**.
+* No secrets are hardcoded in the codebase
 
-The app uses App Service **Environment Variables**:
+* All sensitive values are managed via **App Service environment variables**:
 
-* `AZURE_OPENAI_ENDPOINT`
-* `AZURE_OPENAI_API_KEY`
-* `AZURE_OPENAI_DEPLOYMENT`
-* `STORAGE_CONNECTION_STRING`
+  * `AZURE_OPENAI_ENDPOINT`
+  * `AZURE_OPENAI_API_KEY`
+  * `AZURE_OPENAI_DEPLOYMENT`
+  * `STORAGE_CONNECTION_STRING`
 
----
-
-## 🧩 Repository Contents
-
-* `app.py` — Flask application
-* `requirements.txt` — Dependencies
-* `templates/index.html` — UI
-* `Azure_Triage_Deployment.pdf` — Deployment evidence
+* Follows basic secure configuration practices for POC-level deployment
 
 ---
 
-## 🧭 Why No URLs?
+## 🧩 Repository Structure
 
-All Azure resources were intentionally deleted after validation to avoid unnecessary cost.
-Screenshots serve as permanent, timestamped proof of deployment.
+* `app.py` — Flask application and API logic
+* `requirements.txt` — Python dependencies
+* `templates/index.html` — User interface
+* `Azure_Triage_Deployment.pdf` — Deployment evidence and validation artifacts
 
 ---
 
-## 🎯 Purpose of This Project
+## 📦 Deployment Notes
 
-This project was built to demonstrate practical understanding of:
+* Application deployed on Azure App Service (Linux runtime)
+* Azure OpenAI configured with a dedicated model deployment
+* Table Storage used for structured logging of each request/response pair
+* Logging and runtime behavior validated through Azure monitoring tools
 
-* Azure App Service deployment mechanics
-* Azure OpenAI integration in production-style apps
-* Secure secret handling via environment variables
-* Persistent logging using Azure Table Storage
-* Debugging real-world Azure Linux container issues
+> Azure resources were decommissioned after deployment validation to optimize cost usage.
+> The included deployment document provides timestamped evidence of infrastructure, execution, and logging.
+
+---
+
+## 🎯 Objectives
+
+This project was designed to demonstrate:
+
+* End-to-end deployment of an AI-powered application on Azure
+* Integration of LLM inference into a production-style backend
+* Use of managed cloud services for scalability and separation of concerns
+* Implementation of persistent audit logging
+* Debugging and stabilizing a cloud-hosted Python application
 
 ---
 
 ## 🏁 Outcome
 
-A fully working AI triage system deployed on Azure, validated through logs, storage entries, and runtime evidence.
+A fully functional AI triage system successfully deployed on Azure, with validated request handling, LLM inference, and persistent logging.
 
-This is a Proof-of-Concept implementation of a cloud-native AI application.
+This project represents a practical implementation of a cloud-native AI application with real-world deployment considerations.
